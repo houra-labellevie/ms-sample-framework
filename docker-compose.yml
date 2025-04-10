@@ -1,55 +1,55 @@
 version: '3.8'
 
 services:
-  server1:
-    build: ./server1-nestjs
+  ms1-nestjs:
+    build: ./ms1-nestjs
     ports:
       - "3000:3000" # container 内の 3000 番ポートをホストの 3000 番ポートにマッピング
     volumes:
-      - ./server1-nestjs:/usr/src/app
+      - ./ms1-nestjs:/usr/src/app
     environment:
       DATABASE_HOST: mysql
       DATABASE_USER: user
       DATABASE_PASSWORD: password
-      DATABASE_NAME: server1_db
+      DATABASE_NAME: ms1_db
     command: npm run start:dev
     depends_on:
-      - server1-mysql
+      - ms1-mysql
   
-  server1-mysql:
+  ms1-mysql:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: server1_db
+      MYSQL_DATABASE: ms1_db
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:
-      - "3306:3306" # server1 の MySQL はホストの 3306 番ポートにマッピング
+      - "3306:3306" # ms1 の MySQL はホストの 3306 番ポートにマッピング
 
-  server2:
-    build: ./server3-nestjs
+  ms2-nestjs:
+    build: ./ms2-nestjs
     ports:
       - "3001:3000" # container 内の 3000 番ポートをホストの 3001 番ポートにマッピング
     volumes:
-      - ./server3-nestjs:/usr/src/app
+      - ./ms2-nestjs:/usr/src/app
     environment:
       DATABASE_HOST: mysql
       DATABASE_USER: user
       DATABASE_PASSWORD: password
-      DATABASE_NAME: server2_db
+      DATABASE_NAME: ms2_db
     command: npm run start:dev
     depends_on:
-      - server2-mysql
+      - ms2-mysql
 
-  server2-mysql:
+  ms2-mysql:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: server2_db
+      MYSQL_DATABASE: ms2_db
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:
-      - "3307:3306" # server2 の MySQL はホストの 3307 番ポートにマッピング
+      - "3307:3306" # ms2 の MySQL はホストの 3307 番ポートにマッピング
 
   # kafka1:
   #   image: confluentinc/cp-kafka:latest

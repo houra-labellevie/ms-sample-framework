@@ -8,9 +8,9 @@ import {
     Delete,
     Inject,
   } from '@nestjs/common';
-  import { UserService } from './domain/user.service';
-import { CreateUserDto, UpdateUserDto } from './adapter/in/user.dto';
-import { CreateUserCmd, GetUserCmd, GetUsersCmd, RemoveUserCmd, UpdateUserCmd } from './port/in/user.command';
+  import { UserService } from '../../domain/user.service';
+import { CreateUserDto, UpdateUserDto } from './user.dto';
+import { CreateUserCmd, GetUserCmd, GetUsersCmd, RemoveUserCmd, UpdateUserCmd } from '../../port/in/user.command';
 
   
   @Controller('user')

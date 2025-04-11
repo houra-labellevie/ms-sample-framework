@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { UserService } from './domain/user.service';
-import { UserController } from './user.controller';
+import { UserController } from './adapter/in/user.controller';
+import { UserDbAdapter } from './adapter/out/user.repository';
 // import { UserEventProducer } from './producer/user-event.producer';
 
 @Module({
@@ -27,6 +28,10 @@ import { UserController } from './user.controller';
     {
       provide: 'UserService',
       useClass: UserService,
+    },
+    {
+      provide: "UserDbAdapter",
+      useClass: UserDbAdapter
     },
     // {
     //   provide: 'UserEventProducer',

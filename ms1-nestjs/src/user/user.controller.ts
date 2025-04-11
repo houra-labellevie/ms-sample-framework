@@ -8,8 +8,9 @@ import {
     Delete,
     Inject,
   } from '@nestjs/common';
-  import { UserService } from './user.service';
-import { CreateUserDto, UpdateUserDto } from './user.dto';
+  import { UserService } from './domain/user.service';
+import { CreateUserDto, UpdateUserDto } from './adapter/in/user.dto';
+import { CreateUserCmd, GetUserCmd, GetUsersCmd, RemoveUserCmd, UpdateUserCmd } from './port/in/user.command';
 
   
   @Controller('user')
@@ -18,26 +19,31 @@ import { CreateUserDto, UpdateUserDto } from './user.dto';
   
     @Get()
     findAll() {
-      return this.userService.findAll();
+      const cmd: GetUsersCmd = {};
+      return this.userService.getAll(cmd);
     }
   
     @Get(':id')
     findOne(@Param('id') id: string) {
-      return this.userService.findOne(+id);
+      const cmd: GetUserCmd = {id: Number(id)};
+      return this.userService.get(cmd);
     }
   
     @Post()
     create(@Body() createUserDto: CreateUserDto) {
-      return this.userService.create(createUserDto);
+      const cmd: CreateUserCmd = createUserDto
+      return this.userService.create(cmd);
     }
   
     @Patch(':id')
     update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-      return this.userService.update(+id, updateUserDto);
+      const cmd:UpdateUserCmd = {...updateUserDto, id: Number(id)};
+      return this.userService.update(cmd);
     }
   
     @Delete(':id')
     remove(@Param('id') id: string) {
-      return this.userService.remove(+id);
+      const cmd: RemoveUserCmd = {id: Number(id)};
+      return this.userService.remove(cmd);
     }
   }

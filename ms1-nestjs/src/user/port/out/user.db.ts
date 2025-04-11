@@ -1,4 +1,4 @@
-import { CreateUserQuery, GetUserQuery, GetUsersQuery, RemoveUserQuery, UpdateUserQuery } from "./user.query"
+import { CreateUserQuery, GetUserQuery, GetUsersQuery, RemoveUserQuery, UpdateUserQuery } from "./user.db.query"
 
 export interface UserDbPort {
     get: (args: GetUserQuery) => Promise<unknown>

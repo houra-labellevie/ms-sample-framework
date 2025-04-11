@@ -3,7 +3,7 @@ import { MySql2Database } from "drizzle-orm/mysql2";
 import { UserDbPort } from "src/user/port/out/user.db";
 import * as schema from "src/schema";
 import { eq } from "drizzle-orm";
-import { CreateUserQuery, GetUserQuery, GetUsersQuery, RemoveUserQuery, UpdateUserQuery } from "src/user/port/out/user.query";
+import { CreateUserQuery, GetUserQuery, GetUsersQuery, RemoveUserQuery, UpdateUserQuery } from "src/user/port/out/user.db.query";
 
 @Injectable()
 export class UserDbAdapter implements UserDbPort {

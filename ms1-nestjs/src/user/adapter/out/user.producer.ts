@@ -20,6 +20,7 @@ export class UserEventProducer extends KafkaService implements UserEventProducer
 
   public async publishCreateUser(message: CreateUserEventMessage): Promise<void> {
     try {
+          console.log("message emmit:", message);
           this.kafkaClient.emit(topicIds.CREATE_USER, {
             key: message.userId,
             value: JSON.stringify(message),

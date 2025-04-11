@@ -13,7 +13,7 @@ import { UserEventProducer } from './adapter/out/user.producer';
         transport: Transport.KAFKA,
         options: {
           client: {
-            clientId: 'user-kafka',
+            // clientId: 'user-kafka',
             brokers: ['broker1:9092', 'broker2:9093'],
           },
           consumer: {

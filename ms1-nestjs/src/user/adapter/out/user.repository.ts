@@ -35,7 +35,9 @@ export class UserDbAdapter implements UserDbPort {
 
     async create(args: CreateUserQuery) {
         const response = await this.drizzle.insert(schema.user).values(args);
-        return response;
+        return {
+            id: response[0].insertId
+        };
     }
 
     async update(args: UpdateUserQuery) {

@@ -2,12 +2,13 @@ import { Injectable, Inject } from '@nestjs/common';
 import { CreateUserCmd, GetUserCmd, GetUsersCmd, RemoveUserCmd, UpdateUserCmd } from '../port/in/user.usecase.command';
 import { UserUsecase } from '../port/in/user.usecase';
 import { UserDbPort } from '../port/out/user.db';
+import { UserEventProducer } from '../adapter/out/user.producer';
 
 @Injectable()
 export class UserService implements UserUsecase {
   constructor(
-    @Inject('UserDbAdapter') private readonly userDbAdapter: UserDbPort
-    // @Inject('UserEventProducer') private readonly userEventProducer: UserEventProducer,
+    @Inject('UserDbAdapter') private readonly userDbAdapter: UserDbPort,
+    @Inject('UserEventProducer') private readonly userEventProducer: UserEventProducer
   ) {}
 
   async get(cmd: GetUserCmd){
@@ -22,13 +23,12 @@ export class UserService implements UserUsecase {
 
   async create(cmd: CreateUserCmd) {
     const response = await this.userDbAdapter.create(cmd);
-    // await this.userEventProducer.publish({
-    //   type: 'ADDED_TO_USER',
-    //   user: {
-    //     name: createUserDto.name,
-    //     email: createUserDto.email,
-    //   },
-    // });
+    await this.userEventProducer.publishCreateUser({
+      userId: response.id,
+      name: cmd.name,
+      email: cmd.email,
+      createdAt: new Date(),
+    });
     return response;
   }
 

@@ -1,9 +1,13 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { MySql2Database } from "drizzle-orm/mysql2";
 import { UserDbPort } from "src/user/port/out/user.db";
-import * as schema from "src/schema";
+import {User as UserSchema} from "./user.entity"
 import { eq } from "drizzle-orm";
 import { CreateUserQuery, GetUserQuery, GetUsersQuery, RemoveUserQuery, UpdateUserQuery } from "src/user/port/out/user.db.query";
+
+const schema = {
+    user: UserSchema
+} as const
 
 @Injectable()
 export class UserDbAdapter implements UserDbPort {
@@ -15,8 +19,8 @@ export class UserDbAdapter implements UserDbPort {
     async get(args: GetUserQuery) {
         const user = await this.drizzle
               .select()
-              .from(schema.user)
-              .where(eq(schema.user.id, args.id))
+              .from(UserSchema)
+              .where(eq(UserSchema.id, args.id))
               .execute();
             return user;
     }

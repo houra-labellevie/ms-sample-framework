@@ -7,22 +7,32 @@ services:
       - "3000:3000" # container 内の 3000 番ポートをホストの 3000 番ポートにマッピング
     volumes:
       - ./ms1-nestjs:/usr/src/app
+      - /usr/src/app/node_modules
     environment:
       DATABASE_HOST: mysql
       DATABASE_USER: user
       DATABASE_PASSWORD: password
       DATABASE_NAME: ms1_db
-    command: npm run start:dev
+    command: sh -c "npm run migrate && npm run start"
     depends_on:
-      - ms1-mysql
+      ms1-mysql:
+        condition: service_healthy
   
   ms1-mysql:
-    image: mysql:8.0
+    platform: linux/x86_64
+    image: mysql
+    container_name: ms1-mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: ms1_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     ports:
       - "3306:3306" # ms1 の MySQL はホストの 3306 番ポートにマッピング
 
@@ -32,22 +42,32 @@ services:
       - "3001:3000" # container 内の 3000 番ポートをホストの 3001 番ポートにマッピング
     volumes:
       - ./ms2-nestjs:/usr/src/app
+      - /usr/src/app/node_modules
     environment:
       DATABASE_HOST: mysql
       DATABASE_USER: user
       DATABASE_PASSWORD: password
       DATABASE_NAME: ms2_db
-    command: npm run start:dev
+    command: sh -c "npm run migrate && npm run start"
     depends_on:
-      - ms2-mysql
+      ms2-mysql:
+        condition: service_healthy
 
   ms2-mysql:
-    image: mysql:8.0
+    platform: linux/x86_64
+    image: mysql
+    container_name: ms2-mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: ms2_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     ports:
       - "3307:3306" # ms2 の MySQL はホストの 3307 番ポートにマッピング
 
